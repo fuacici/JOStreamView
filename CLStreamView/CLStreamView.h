@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "CLStreamCellView.h"
 
+#define USE_CELL_SWIPE_ACTION 1
+
 #pragma mark - Delegate
 
 @protocol CLStreamViewDataSource,CLStreamViewDelegate ;
@@ -24,12 +26,17 @@
 - (CLStreamCellView *) dequeueCell;
 - (CGSize) actualSizeForCellAtIndex:(NSInteger) index;
 - (NSInteger)indexForCell:(CLStreamCellView *) cell;
+- (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated;
 @end
 
 @protocol CLStreamViewDelegate <UIScrollViewDelegate>
 
 @optional
 - (void)streamView:(CLStreamView *) streamView didSelectView:(CLStreamCellView *)cell atIndex:(NSInteger)index;
+- (void)streamView:(CLStreamView *) streamView didRemoveView:(CLStreamCellView *)cell atIndex:(NSInteger)index;
+#if USE_CELL_SWIPE_ACTION
+- (void)streamView:(CLStreamView *) streamView didSwipeView:(CLStreamCellView *)cell atIndex:(NSInteger)index direction:(UISwipeGestureRecognizerDirection) direction;
+#endif
 @end
 
 #pragma mark - DataSource
