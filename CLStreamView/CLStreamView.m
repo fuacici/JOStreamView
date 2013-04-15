@@ -57,6 +57,11 @@
     self.rectArray = [NSMutableArray arrayWithCapacity:_count];
     if (!_reusedCells) {
         self.reusedCells = [NSMutableSet setWithCapacity:10];
+    }else
+    {
+        NSArray * t = [_cells objectsAtIndexes: _visibleCells];
+        [t makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [_reusedCells addObjectsFromArray: t];
     }
     self.visibleCells = [NSMutableIndexSet indexSet];
     self.cells = [NSMutableArray arrayWithCapacity: _count];
