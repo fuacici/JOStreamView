@@ -274,7 +274,8 @@
 - (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated
 {
     CLStreamCellView * cell = [_cells objectAtIndex: index];
-    //cells ,rects ,column remove index , 
+    //cells ,rects ,column remove index ,
+    CGRect theRemoved = [[_rectArray objectAtIndex: index] CGRectValue];
     [_cells removeObjectAtIndex: index];
     [_rectArray removeObjectAtIndex: index];
     _count = _cells.count;
@@ -298,10 +299,11 @@
         if ([col.cells containsIndex:index])
         {
             affectedCol = col.index;
+            [col.cells removeIndex: index];
         }else
         {
             //just shift affecte index
-            NSInteger t = [col.cells indexGreaterThanOrEqualToIndex: index];
+            NSInteger t = [col.cells indexGreaterThanIndex: index];
             if (t!= NSNotFound)
             {
                 [col.cells shiftIndexesStartingAtIndex: t by:-1];
@@ -313,22 +315,29 @@
     if (affectedCol != NSNotFound)
     {
         CLStreamColumn * col = _columns[affectedCol] ;
-        int t = [col.cells indexGreaterThanOrEqualToIndex: index];
-        NSAssert(t!= NSNotFound, @"must be in this column");
-        [col.cells shiftIndexesStartingAtIndex: t by:-1];
-        col.height = _margin.height;
-        [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-            CGRect trct = [_rectArray[idx] CGRectValue];
-            if (idx>= index)
-            {
-                float x = _margin.width +col.index *( _columnWidth+ _space.width) ;
-                trct.origin = CGPointMake(x, col.height);
-                [_rectArray replaceObjectAtIndex:idx withObject:[NSValue valueWithCGRect: trct]];
-                //adjust them
-                [_visibleCells removeIndex: idx];
-            }
-            col.height += trct.size.height+_space.height;
-        }];
+        int t = [col.cells indexGreaterThanIndex: index];
+        if (t != NSNotFound)
+        {
+            [col.cells shiftIndexesStartingAtIndex: t by:-1];
+            col.height = _margin.height;
+            [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                CGRect trct = [_rectArray[idx] CGRectValue];
+                if (idx>= index)
+                {
+                    float x = _margin.width +col.index *( _columnWidth+ _space.width) ;
+                    trct.origin = CGPointMake(x, col.height);
+                    [_rectArray replaceObjectAtIndex:idx withObject:[NSValue valueWithCGRect: trct]];
+                    //adjust them
+                    [_visibleCells removeIndex: idx];
+                }
+                col.height += trct.size.height+_space.height;
+            }];
+        }else
+        {
+            //cur is the last one
+            col.height -= theRemoved.size.height - _space.height;
+        }
+        
         [self refreshViews:animated];
         float maxh = 0;
         for(CLStreamColumn * col in _columns)
@@ -465,15 +474,21 @@
     float angle = atanf(offset.width/h);
     t = CATransform3DRotate(t,angle, 0, 0, 1);
     animatingCell.layer.transform = t;
+    
+    //y= - PI/3 * |x| +1;
+    float opacity = -3*M_1_PI * fabs(angle)+1;
+    animatingCell.layer.opacity = opacity;
     DebugLog(@"offset : %@", NSStringFromCGSize(offset));
 }
 
 - (void)cleanAnimatedCell
 {
 #if USE_CELL_SWIPE_ACTION
+     animatingCell.layer.opacity = 1;
     animatingCell.layer.transform = CATransform3DIdentity;
     animatingCell = nil;
     _scrollView.canCancelContentTouches  = YES;
+   
 #endif
 }
 @end
