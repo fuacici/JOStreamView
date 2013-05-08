@@ -3,12 +3,12 @@
 //  liulianclient
 //
 //  Created by Joost💟Blair on 4/12/13.
-//  Copyright (c) 2013 yang alef. All rights reserved.
+//  Copyright (c) 2013 joojoo. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface CLStreamCellView : UIView
+@interface JOStreamCellView : UIView
 @property (nonatomic,strong) UIImageView * imageView;
 @property (nonatomic,strong) UILabel * label;
 @property (nonatomic,strong,readonly) UIView * contentView;

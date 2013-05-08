@@ -3,19 +3,19 @@
 //  liulianclient
 //
 //  Created by Joost💟Blair on 4/12/13.
-//  Copyright (c) 2013 yang alef. All rights reserved.
+//  Copyright (c) 2013 joojoo. All rights reserved.
 //
 
-#import "CLStreamCellView.h"
+#import "JOStreamCellView.h"
 #import <QuartzCore/QuartzCore.h>
-@implementation CLStreamCellView
+@implementation JOStreamCellView
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization cod
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         _label = [[UILabel alloc] initWithFrame:CGRectZero];
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         _contentView.backgroundColor = [UIColor whiteColor];

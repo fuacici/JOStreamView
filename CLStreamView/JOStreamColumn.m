@@ -3,12 +3,12 @@
 //  liulianclient
 //
 //  Created by Joost💟Blair on 4/12/13.
-//  Copyright (c) 2013 yang alef. All rights reserved.
+//  Copyright (c) 2013 joojoo. All rights reserved.
 //
 
-#import "CLStreamColumn.h"
+#import "JOStreamColumn.h"
 
-@implementation CLStreamColumn
+@implementation JOStreamColumn
 - (id)init
 {
     self = [super init];

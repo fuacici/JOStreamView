@@ -3,14 +3,18 @@
 //  liulianclient
 //
 //  Created by Joost💟Blair on 4/12/13.
-//  Copyright (c) 2013 yang alef. All rights reserved.
+//  Copyright (c) 2013 joojoo. All rights reserved.
 //
 
-#import "CLStreamView.h"
-#import "CLStreamColumn.h"
+#import "JOStreamView.h"
+#import "JOStreamColumn.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface CLStreamView()
+#ifndef DebugLog 
+#define DebugLog  
+#endif
+
+@interface JOStreamView()
 {
     
     CGRect visibleRect;
@@ -18,7 +22,7 @@
     UISwipeGestureRecognizerDirection swipeDirection;
     CGPoint beginPos;
 
-    __strong CLStreamCellView * animatingCell;
+    __strong JOStreamCellView * animatingCell;
 }
 @property (nonatomic,strong) NSMutableArray * columns;
 @property (nonatomic) NSInteger columnNum;
@@ -31,7 +35,7 @@
 @end
 
 #pragma mark - implementation
-@implementation CLStreamView
+@implementation JOStreamView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -143,7 +147,7 @@
 {
     for (int i =0; i< _columnNum; ++i)
     {
-        CLStreamColumn * column = [[CLStreamColumn alloc] init];
+        JOStreamColumn * column = [[JOStreamColumn alloc] init];
         column.height = _margin.height;
         column.index = i;
         [_columns addObject:column];
@@ -156,7 +160,7 @@
  
     int autoAdjustCount =0;
     int tcol = 0;
-    CLStreamColumn * tcolumn = nil;
+    JOStreamColumn * tcolumn = nil;
     for (int i =cellsRange.location; i< cellsRange.location+cellsRange.length; ++i)
     {
         tcolumn =_columns[tcol];
@@ -204,9 +208,9 @@
     //end horizontal layout
     
 }
-- (CLStreamCellView *) loadViewAtIndex:(NSInteger) idx animated:(BOOL) animated
+- (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx animated:(BOOL) animated
 {
-    CLStreamCellView * cell = _cells[idx];
+    JOStreamCellView * cell = _cells[idx];
     if ([_visibleCells containsIndex: idx])
     {
         return cell;
@@ -241,7 +245,7 @@
 }
 - (void)enqueueCellAtIndex:(NSInteger) idx
 {
-    CLStreamCellView * cell = _cells[idx];
+    JOStreamCellView * cell = _cells[idx];
     if ([cell isEqual:[NSNull null]])
     {
         DebugLog(@"%@-%d",@"error",idx);
@@ -251,9 +255,9 @@
     [_reusedCells addObject:cell];
     _cells[idx] = [NSNull null];
 }
-- (CLStreamCellView *) dequeueCell
+- (JOStreamCellView *) dequeueCell
 {
-    CLStreamCellView * cell = [_reusedCells anyObject];
+    JOStreamCellView * cell = [_reusedCells anyObject];
     if (cell)
     {
         [_reusedCells removeObject: cell];
@@ -271,7 +275,7 @@
     // Drawing code
 }
 */
-- (NSInteger)indexForCell:(CLStreamCellView *) cell
+- (NSInteger)indexForCell:(JOStreamCellView *) cell
 {
    NSInteger idx =  [_cells indexOfObject: cell];
     return idx;
@@ -280,14 +284,14 @@
 {
     return  [_rectArray[index] CGRectValue].size;
 }
-- (void)selectedCell:(CLStreamCellView*) cell
+- (void)selectedCell:(JOStreamCellView*) cell
 {
     int i = [self indexForCell:cell];
     [self.delegate streamView:self didSelectView:cell atIndex: i];
 }
 - (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated
 {
-    CLStreamCellView * cell = _cells[index];
+    JOStreamCellView * cell = _cells[index];
     //cells ,rects ,column remove index ,
     CGRect theRemoved = [_rectArray[index] CGRectValue];
     [_cells removeObjectAtIndex: index];
@@ -300,7 +304,7 @@
         [_visibleCells shiftIndexesStartingAtIndex:st by:-1];
     }
 
-    if ([cell isKindOfClass:[CLStreamCellView class]])
+    if ([cell isKindOfClass:[JOStreamCellView class]])
     {
         [cell removeFromSuperview];
         [_reusedCells addObject: cell];
@@ -308,7 +312,7 @@
     
     //caculate affected column's cell rects
     NSInteger affectedCol = NSNotFound;
-    for(CLStreamColumn * col in _columns)
+    for(JOStreamColumn * col in _columns)
     {
         if ([col.cells containsIndex:index])
         {
@@ -328,7 +332,7 @@
     // get new frame for those affected cells
     if (affectedCol != NSNotFound)
     {
-        CLStreamColumn * col = _columns[affectedCol] ;
+        JOStreamColumn * col = _columns[affectedCol] ;
         int t = [col.cells indexGreaterThanIndex: index];
         if (t != NSNotFound)
         {
@@ -354,7 +358,7 @@
         
         [self refreshViews:animated];
         float maxh = 0;
-        for(CLStreamColumn * col in _columns)
+        for(JOStreamColumn * col in _columns)
         {
             maxh = maxh > col.height? maxh:col.height;
         }
@@ -391,7 +395,7 @@
     // get new frame for those affected cells
     if (affectedCol != NSNotFound)
     {
-        CLStreamColumn * col = _columns[affectedCol] ;
+        JOStreamColumn * col = _columns[affectedCol] ;
         col.height = _margin.height;
         [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
             CGRect trct = [_rectArray[idx] CGRectValue];
@@ -404,7 +408,7 @@
             col.height += trct.size.height+_space.height;
         }];
         float maxh = 0;
-        for(CLStreamColumn * col in _columns)
+        for(JOStreamColumn * col in _columns)
         {
             maxh = maxh > col.height? maxh:col.height;
         }
@@ -416,7 +420,7 @@
 }
 - (NSInteger) columnIndexForCellAtIndex:(NSInteger) index
 {
-    for(CLStreamColumn * col in _columns)
+    for(JOStreamColumn * col in _columns)
     {
         if ([col.cells containsIndex:index])
         {
@@ -468,9 +472,9 @@
     UITouch * touch = [touches anyObject];
     if (!isSwipe)
     {
-        if ([[[touch view] superview] isKindOfClass:[CLStreamCellView class]])
+        if ([[[touch view] superview] isKindOfClass:[JOStreamCellView class]])
         {
-            [self selectedCell: (CLStreamCellView*)[[touch view] superview]];
+            [self selectedCell: (JOStreamCellView*)[[touch view] superview]];
         }
     }else
     {
