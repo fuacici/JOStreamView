@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CLStreamCellView.h"
 
-#define USE_CELL_SWIPE_ACTION 1
+#define USE_CELL_SWIPE_ACTION 0
 
 #pragma mark - Delegate
 
@@ -27,6 +27,7 @@
 - (CGSize) actualSizeForCellAtIndex:(NSInteger) index;
 - (NSInteger)indexForCell:(CLStreamCellView *) cell;
 - (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated;
+- (void)appendCells:(int) amount;
 @end
 
 @protocol CLStreamViewDelegate <UIScrollViewDelegate>

@@ -7,7 +7,7 @@
 //
 
 #import "CLStreamCellView.h"
-
+#import <QuartzCore/QuartzCore.h>
 @implementation CLStreamCellView
 
 - (id)initWithFrame:(CGRect)frame
@@ -17,8 +17,13 @@
         // Initialization cod
         _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         _label = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self addSubview: _imageView];
-        [self addSubview:_label];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        _contentView.backgroundColor = [UIColor whiteColor];
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+        [self addSubview: _contentView];
+        [_contentView addSubview: _imageView];
+        [_contentView addSubview:_label];
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

@@ -11,6 +11,7 @@
 @interface CLStreamCellView : UIView
 @property (nonatomic,strong) UIImageView * imageView;
 @property (nonatomic,strong) UILabel * label;
+@property (nonatomic,strong,readonly) UIView * contentView;
 @property (nonatomic,weak) id target;
 @property (nonatomic) SEL action;
 - (void) prepareForReuse;
