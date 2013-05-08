@@ -18,10 +18,10 @@
 		C8E3F2C9173A52DD005F8746 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C8E3F2C8173A52DD005F8746 /* Default-568h@2x.png */; };
 		C8E3F2CC173A52DD005F8746 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8E3F2CA173A52DD005F8746 /* MainStoryboard.storyboard */; };
 		C8E3F2CF173A52DD005F8746 /* JOViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2CE173A52DD005F8746 /* JOViewController.m */; };
-		C8E3F2DC173A5305005F8746 /* JOStreamCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2D7173A5305005F8746 /* JOStreamCellView.m */; };
-		C8E3F2DD173A5305005F8746 /* JOStreamColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2D9173A5305005F8746 /* JOStreamColumn.m */; };
-		C8E3F2DE173A5305005F8746 /* JOStreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2DB173A5305005F8746 /* JOStreamView.m */; };
 		C8E3F2E0173A55ED005F8746 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E3F2DF173A55ED005F8746 /* test.jpg */; };
+		C8E3F2F5173A597C005F8746 /* JOStreamCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2F0173A597C005F8746 /* JOStreamCellView.m */; };
+		C8E3F2F6173A597C005F8746 /* JOStreamColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2F2173A597C005F8746 /* JOStreamColumn.m */; };
+		C8E3F2F7173A597C005F8746 /* JOStreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E3F2F4173A597C005F8746 /* JOStreamView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,13 +41,13 @@
 		C8E3F2CB173A52DD005F8746 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		C8E3F2CD173A52DD005F8746 /* JOViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JOViewController.h; sourceTree = "<group>"; };
 		C8E3F2CE173A52DD005F8746 /* JOViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JOViewController.m; sourceTree = "<group>"; };
-		C8E3F2D6173A5305005F8746 /* JOStreamCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamCellView.h; sourceTree = "<group>"; };
-		C8E3F2D7173A5305005F8746 /* JOStreamCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamCellView.m; sourceTree = "<group>"; };
-		C8E3F2D8173A5305005F8746 /* JOStreamColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamColumn.h; sourceTree = "<group>"; };
-		C8E3F2D9173A5305005F8746 /* JOStreamColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamColumn.m; sourceTree = "<group>"; };
-		C8E3F2DA173A5305005F8746 /* JOStreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamView.h; sourceTree = "<group>"; };
-		C8E3F2DB173A5305005F8746 /* JOStreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamView.m; sourceTree = "<group>"; };
 		C8E3F2DF173A55ED005F8746 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
+		C8E3F2EF173A597C005F8746 /* JOStreamCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamCellView.h; sourceTree = "<group>"; };
+		C8E3F2F0173A597C005F8746 /* JOStreamCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamCellView.m; sourceTree = "<group>"; };
+		C8E3F2F1173A597C005F8746 /* JOStreamColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamColumn.h; sourceTree = "<group>"; };
+		C8E3F2F2173A597C005F8746 /* JOStreamColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamColumn.m; sourceTree = "<group>"; };
+		C8E3F2F3173A597C005F8746 /* JOStreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JOStreamView.h; sourceTree = "<group>"; };
+		C8E3F2F4173A597C005F8746 /* JOStreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JOStreamView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +94,8 @@
 		C8E3F2B8173A52DD005F8746 /* demoStreamView */ = {
 			isa = PBXGroup;
 			children = (
+				C8E3F2EE173A597C005F8746 /* JOStreamView */,
 				C8E3F2DF173A55ED005F8746 /* test.jpg */,
-				C8E3F2D5173A5305005F8746 /* CLStreamView */,
 				C8E3F2C1173A52DD005F8746 /* JOAppDelegate.h */,
 				C8E3F2C2173A52DD005F8746 /* JOAppDelegate.m */,
 				C8E3F2CA173A52DD005F8746 /* MainStoryboard.storyboard */,
@@ -120,18 +120,18 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C8E3F2D5173A5305005F8746 /* CLStreamView */ = {
+		C8E3F2EE173A597C005F8746 /* JOStreamView */ = {
 			isa = PBXGroup;
 			children = (
-				C8E3F2D6173A5305005F8746 /* JOStreamCellView.h */,
-				C8E3F2D7173A5305005F8746 /* JOStreamCellView.m */,
-				C8E3F2D8173A5305005F8746 /* JOStreamColumn.h */,
-				C8E3F2D9173A5305005F8746 /* JOStreamColumn.m */,
-				C8E3F2DA173A5305005F8746 /* JOStreamView.h */,
-				C8E3F2DB173A5305005F8746 /* JOStreamView.m */,
+				C8E3F2EF173A597C005F8746 /* JOStreamCellView.h */,
+				C8E3F2F0173A597C005F8746 /* JOStreamCellView.m */,
+				C8E3F2F1173A597C005F8746 /* JOStreamColumn.h */,
+				C8E3F2F2173A597C005F8746 /* JOStreamColumn.m */,
+				C8E3F2F3173A597C005F8746 /* JOStreamView.h */,
+				C8E3F2F4173A597C005F8746 /* JOStreamView.m */,
 			);
-			name = CLStreamView;
-			path = ../../CLStreamView;
+			name = JOStreamView;
+			path = ../../JOStreamView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,9 +205,9 @@
 				C8E3F2BF173A52DD005F8746 /* main.m in Sources */,
 				C8E3F2C3173A52DD005F8746 /* JOAppDelegate.m in Sources */,
 				C8E3F2CF173A52DD005F8746 /* JOViewController.m in Sources */,
-				C8E3F2DC173A5305005F8746 /* JOStreamCellView.m in Sources */,
-				C8E3F2DD173A5305005F8746 /* JOStreamColumn.m in Sources */,
-				C8E3F2DE173A5305005F8746 /* JOStreamView.m in Sources */,
+				C8E3F2F5173A597C005F8746 /* JOStreamCellView.m in Sources */,
+				C8E3F2F6173A597C005F8746 /* JOStreamColumn.m in Sources */,
+				C8E3F2F7173A597C005F8746 /* JOStreamView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
