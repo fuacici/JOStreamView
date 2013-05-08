@@ -11,7 +11,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 #ifndef DebugLog 
-#define DebugLog  
+    #if DEBUG
+        #define DebugLog NSLog  
+    #else
+        #define DebugLog(s,...)
+    #endif
 #endif
 
 @interface JOStreamView()
@@ -21,7 +25,6 @@
     BOOL isSwipe;
     UISwipeGestureRecognizerDirection swipeDirection;
     CGPoint beginPos;
-
     __strong JOStreamCellView * animatingCell;
 }
 @property (nonatomic,strong) NSMutableArray * columns;
