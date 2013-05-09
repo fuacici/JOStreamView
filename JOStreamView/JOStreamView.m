@@ -290,27 +290,32 @@
 - (void)selectedCell:(JOStreamCellView*) cell
 {
     int i = [self indexForCell:cell];
-    [self.delegate streamView:self didSelectView:cell atIndex: i];
+    if ([self.delegate respondsToSelector:@selector(streamView:didSelectView:atIndex:)])
+    {
+        [self.delegate streamView:self didSelectView:cell atIndex: i];
+    }
+
 }
 - (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated
 {
     JOStreamCellView * cell = _cells[index];
+    if ([cell isKindOfClass:[JOStreamCellView class]])
+    {
+        // recycle it first
+        [self enqueueCellAtIndex:index];
+    }
     //cells ,rects ,column remove index ,
     CGRect theRemoved = [_rectArray[index] CGRectValue];
     [_cells removeObjectAtIndex: index];
     [_rectArray removeObjectAtIndex: index];
     _count = _cells.count;
     [_visibleCells removeIndex: index];
+    
+    // make sure the greater indexes are right
     NSInteger st = [_visibleCells indexGreaterThanOrEqualToIndex: index];
     if (st!= NSNotFound)
     {
         [_visibleCells shiftIndexesStartingAtIndex:st by:-1];
-    }
-
-    if ([cell isKindOfClass:[JOStreamCellView class]])
-    {
-        [cell removeFromSuperview];
-        [_reusedCells addObject: cell];
     }
     
     //caculate affected column's cell rects
@@ -458,9 +463,10 @@
     }
    
 #if USE_CELL_SWIPE_ACTION
-       if (animatingCell == nil && isSwipe &&  [[touch view] isKindOfClass:[CLStreamCellView class]])
+    UIView * tcell = [[touch view] superview];
+       if (animatingCell == nil && isSwipe &&  [tcell isKindOfClass:[JOStreamCellView class]])
     {
-        CLStreamCellView * cell = (CLStreamCellView *)[touch view] ;
+        JOStreamCellView * cell = (JOStreamCellView *)tcell;
         animatingCell = cell;
         _scrollView.canCancelContentTouches = NO;
     }

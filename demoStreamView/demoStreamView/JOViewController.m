@@ -11,6 +11,7 @@
 
 @interface JOViewController ()<JOStreamViewDataSource,JOStreamViewDelegate>
 @property (nonatomic,strong) JOStreamView * stream;
+@property (nonatomic,strong) NSMutableArray * item;
 @end
 
 @implementation JOViewController
@@ -18,6 +19,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _item = [NSMutableArray arrayWithCapacity:10];
+    for (int i =0; i!= 10; ++i) {
+        [_item addObject:[NSString  stringWithFormat:@"origin %d", i]];
+    }
     _stream = [[JOStreamView alloc] initWithFrame:self.view.bounds];
     _stream.delegate = self;
     _stream.datasource = self;
@@ -37,7 +42,7 @@
 }
 - (int)numberOfViewsStreamView:(JOStreamView *)streamView
 {
-    return 10;
+    return _item.count;
 }
 - (CGSize) streamView:(JOStreamView *)streamView sizeForViewAtIndex:(NSInteger)index
 {
@@ -51,7 +56,14 @@
     {
         cell = [[JOStreamCellView alloc] initWithFrame: CGRectMake(0, 0, t.width, t.height)];
     }
+    cell.label.text = _item[index];
+    [cell.label sizeToFit];
     cell.imageView.image = [UIImage imageNamed:@"test.jpg"];
     return cell;
+}
+- (void)streamView:(JOStreamView *)streamView didSwipeView:(JOStreamCellView *)cell atIndex:(NSInteger)index direction:(UISwipeGestureRecognizerDirection)direction
+{
+    [_item removeObjectAtIndex: index];
+    [streamView removeCellAtIndex: index animated:YES];
 }
 @end

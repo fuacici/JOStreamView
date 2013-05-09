@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JOStreamCellView.h"
 
-#define USE_CELL_SWIPE_ACTION 0
+#define USE_CELL_SWIPE_ACTION 1
 
 #pragma mark - Delegate
 
@@ -36,7 +36,7 @@
 - (void)streamView:(JOStreamView *) streamView didSelectView:(JOStreamCellView *)cell atIndex:(NSInteger)index;
 - (void)streamView:(JOStreamView *) streamView didRemoveView:(JOStreamCellView *)cell atIndex:(NSInteger)index;
 #if USE_CELL_SWIPE_ACTION
-- (void)streamView:(CLStreamView *) streamView didSwipeView:(CLStreamCellView *)cell atIndex:(NSInteger)index direction:(UISwipeGestureRecognizerDirection) direction;
+- (void)streamView:(JOStreamView *) streamView didSwipeView:(JOStreamCellView *)cell atIndex:(NSInteger)index direction:(UISwipeGestureRecognizerDirection) direction;
 #endif
 @end
 
