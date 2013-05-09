@@ -91,7 +91,7 @@
 {
     if (animatingCell )
     {
-        DebugLog(@"%@",@"dragging");
+        DebugLog(@"%@",@"cell is being dragged");
         return;
     }
     //load views
@@ -223,7 +223,6 @@
 - (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx
 {
     JOStreamCellView * cell = _cells[idx];
-    
     if ([cell isKindOfClass:[NSNull class]])
     {
         cell = [_datasource streamView:self viewAtIndex:idx];
@@ -479,14 +478,19 @@
     }else
     {
 #if USE_CELL_SWIPE_ACTION
-        NSNumber * angle = [animatingCell.layer valueForKeyPath:@"transform.rotation.z"];
-        if (fabs([angle floatValue])> 5 *M_PI/180.0f)
+        NSNumber * radian = [animatingCell.layer.presentationLayer valueForKeyPath:@"transform.rotation.z"];
+        if (fabs([radian floatValue])> 8 *M_PI/180.0f)
         {
             NSInteger idx = [self indexForCell: animatingCell];
-            [self.delegate streamView:self didSwipeView:animatingCell atIndex: idx direction:swipeDirection];
+            JOStreamCellView * tcell = animatingCell;
+            [self cleanAnimatedCell];
+            [self.delegate streamView:self didSwipeView:tcell atIndex: idx direction:swipeDirection];
+        }else
+        {
+            [self cleanAnimatedCell];
         }
         
-        [self cleanAnimatedCell];
+
 #endif
         
     }
@@ -518,7 +522,7 @@
 - (void)cleanAnimatedCell
 {
 #if USE_CELL_SWIPE_ACTION
-     animatingCell.layer.opacity = 1;
+    animatingCell.layer.opacity = 1;
     animatingCell.layer.transform = CATransform3DIdentity;
     animatingCell = nil;
     _scrollView.canCancelContentTouches  = YES;
