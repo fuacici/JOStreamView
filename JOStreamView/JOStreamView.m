@@ -236,7 +236,7 @@
             CGRect originRct = cell.frame;
             if (!justMove)
             {
-                 originRct.origin.y = originRct.origin.y+originRct.size.height;
+                 originRct.origin.y = tframe.origin.y+originRct.size.height;
                 originRct.origin.x = tframe.origin.x;
             }
             cell.frame = originRct;
