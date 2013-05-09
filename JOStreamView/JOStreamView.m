@@ -374,7 +374,10 @@
         maxh = maxh > col.height? maxh:col.height;
     }
     _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width,maxh);
-    
+    if ([self.delegate respondsToSelector:@selector(streamView:didRemoveView:atIndex:)])
+    {
+        [self.delegate streamView:self didRemoveView:cell atIndex:index];
+    }
 }
 - (void)appendCells:(int) amount
 {
