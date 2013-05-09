@@ -322,56 +322,55 @@
     NSInteger affectedCol = NSNotFound;
     for(JOStreamColumn * col in _columns)
     {
+        // first find it's column index
         if ([col.cells containsIndex:index])
         {
             affectedCol = col.index;
             [col.cells removeIndex: index];
-        }else
-        {
-            //just shift affecte index
-            NSInteger t = [col.cells indexGreaterThanIndex: index];
-            if (t!= NSNotFound)
-            {
-                [col.cells shiftIndexesStartingAtIndex: t by:-1];
-            }
-        }
-    }
-    
-    // get new frame for those affected cells
-    if (affectedCol != NSNotFound)
-    {
-        JOStreamColumn * col = _columns[affectedCol] ;
-        int t = [col.cells indexGreaterThanIndex: index];
-        if (t != NSNotFound)
-        {
-            [col.cells shiftIndexesStartingAtIndex: t by:-1];
-            col.height = _margin.height;
-            [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                CGRect trct = [_rectArray[idx] CGRectValue];
-                if (idx>= index)
-                {
-                    float x = _margin.width +col.index *( _columnWidth+ _space.width) ;
-                    trct.origin = CGPointMake(x, col.height);
-                    _rectArray[idx] = [NSValue valueWithCGRect: trct];
-                    //adjust them
-                    [_visibleCells removeIndex: idx];
-                }
-                col.height += trct.size.height+_space.height;
-            }];
-        }else
-        {
-            //cur is the last one
-            col.height -= theRemoved.size.height - _space.height;
         }
         
-        [self refreshViews:animated];
-        float maxh = 0;
-        for(JOStreamColumn * col in _columns)
+        //just shift greater index
+        NSInteger t = [col.cells indexGreaterThanIndex: index];
+        if (t!= NSNotFound)
         {
-            maxh = maxh > col.height? maxh:col.height;
+            [col.cells shiftIndexesStartingAtIndex: t by:-1];
         }
-        _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width,maxh);
+       
     }
+    
+    // get new frame for those affected cells in same columns
+    NSAssert(affectedCol != NSNotFound, @"remove cell always affecte one column");
+    JOStreamColumn * col = _columns[affectedCol] ;
+    int firstIndex = [col.cells indexGreaterThanOrEqualToIndex: index];
+    if (firstIndex != NSNotFound)
+    {
+        col.height = _margin.height;
+        [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            CGRect trct = [_rectArray[idx] CGRectValue];
+            if (idx>= index)
+            {
+                float x = _margin.width +col.index *( _columnWidth+ _space.width) ;
+                trct.origin = CGPointMake(x, col.height);
+                _rectArray[idx] = [NSValue valueWithCGRect: trct];
+                //adjust them
+                [_visibleCells removeIndex: idx];
+            }
+            col.height += trct.size.height+_space.height;
+        }];
+    }else
+    {
+        //cur is the last one
+        col.height -= (theRemoved.size.height + _space.height);
+    }
+    
+    [self refreshViews:animated];
+    float maxh = 0;
+    for(JOStreamColumn * col in _columns)
+    {
+        maxh = maxh > col.height? maxh:col.height;
+    }
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width,maxh);
+    
 }
 - (void)appendCells:(int) amount
 {
