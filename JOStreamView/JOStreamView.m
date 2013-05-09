@@ -114,16 +114,7 @@
         NSValue * value = _rectArray[idx];
         if ( CGRectIntersectsRect(visibleRect, [value CGRectValue]) )
         {
-            if (animated)
-            {
-                [UIView animateWithDuration:0.5 animations:^{
-                    [self loadViewAtIndex: idx ];
-                }];
-            }else
-            {
-                [self loadViewAtIndex: idx ];
-            }
-        
+            [self loadViewAtIndex: idx animate: animated];
         }
     }];
 }
@@ -220,9 +211,12 @@
     //end horizontal layout
     
 }
-- (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx
+- (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx animate:(BOOL) animate
 {
     JOStreamCellView * cell = _cells[idx];
+    BOOL justMove = YES;
+
+    
     if ([cell isKindOfClass:[NSNull class]])
     {
         cell = [_datasource streamView:self viewAtIndex:idx];
@@ -231,8 +225,32 @@
         cell.action = @selector(selectedCell);
         [_scrollView addSubview: cell];
         [_visibleCells addIndex: idx];
+        //for animation
+        justMove = NO;
     }
-    cell.frame = [_rectArray[idx] CGRectValue];
+    CGRect tframe =  [_rectArray[idx] CGRectValue];
+    if (animate)
+    {
+        if (!CGRectEqualToRect(tframe, cell.frame))
+        {
+            CGRect originRct = cell.frame;
+            if (!justMove)
+            {
+                 originRct.origin.y = originRct.origin.y+originRct.size.height;
+                originRct.origin.x = tframe.origin.x;
+            }
+            cell.frame = originRct;
+            [UIView animateWithDuration:0.3 animations:^{
+                cell.frame =tframe;
+            }];
+        }
+    }else
+    {
+        cell.frame = tframe;
+    }
+    
+    
+    
     
      NSAssert(![cell isEqual: [NSNull null]], @"enqueued cell can not be null");
     return cell;
@@ -527,7 +545,6 @@
     animatingCell = nil;
     _scrollView.canCancelContentTouches  = YES;
 #endif
-
 }
 
 @end
