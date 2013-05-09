@@ -97,7 +97,7 @@
     //load views
     visibleRect = CGRectMake(_scrollView.contentOffset.x, _scrollView.contentOffset.y, _scrollView.frame.size.width,  _scrollView.frame.size.height);
     NSMutableIndexSet * newIdx = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _rectArray.count)];
-//    [newIdx removeIndexes: _visibleCells];
+    [newIdx removeIndexes: _visibleCells];
     
     //clear the outbounded cells
     NSMutableIndexSet * idxToRemove = [NSMutableIndexSet indexSet];
@@ -114,7 +114,16 @@
         NSValue * value = _rectArray[idx];
         if ( CGRectIntersectsRect(visibleRect, [value CGRectValue]) )
         {
-            [self loadViewAtIndex: idx animated: animated];
+            if (animated)
+            {
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self loadViewAtIndex: idx ];
+                }];
+            }else
+            {
+                [self loadViewAtIndex: idx ];
+            }
+        
         }
     }];
 }
@@ -211,17 +220,10 @@
     //end horizontal layout
     
 }
-- (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx animated:(BOOL) animated
+- (JOStreamCellView *) loadViewAtIndex:(NSInteger) idx
 {
     JOStreamCellView * cell = _cells[idx];
-    if ([_visibleCells containsIndex: idx])
-    {
-        return cell;
-    }
-    if (cell == animatingCell)
-    {
-        return cell;
-    }
+    
     if ([cell isKindOfClass:[NSNull class]])
     {
         cell = [_datasource streamView:self viewAtIndex:idx];
@@ -231,18 +233,8 @@
         [_scrollView addSubview: cell];
         [_visibleCells addIndex: idx];
     }
+    cell.frame = [_rectArray[idx] CGRectValue];
     
-    if (animated)
-    {
-        [UIView animateWithDuration:1.0f animations:^{
-            cell.frame = [_rectArray[idx] CGRectValue];
-        } completion:^(BOOL finished) {
-
-        }];
-    }else
-    {
-        cell.frame = [_rectArray[idx] CGRectValue];
-    }
      NSAssert(![cell isEqual: [NSNull null]], @"enqueued cell can not be null");
     return cell;
 }
