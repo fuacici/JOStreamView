@@ -315,6 +315,7 @@
     }
     //cells ,rects ,column remove index ,
     CGRect theRemoved = [_rectArray[index] CGRectValue];
+    _totalHeight -= theRemoved.size.height;
     [_cells removeObjectAtIndex: index];
     [_rectArray removeObjectAtIndex: index];
     _count = _cells.count;
