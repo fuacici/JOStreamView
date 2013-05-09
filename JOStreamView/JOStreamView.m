@@ -136,13 +136,7 @@
         [_rectArray addObject:[NSValue valueWithCGRect: tframe]];
         [_cells addObject: [NSNull null]];
     }
-    if (addedRange.length >1)
-    {
-        _totalHeight += (addedRange.length -1 - (_columnNum -1))*_space.height;
-    }else
-    {
-        _totalHeight += _space.height;
-    }
+    _totalHeight += addedRange.length *_space.height;
     
     //
 }
@@ -315,7 +309,7 @@
     }
     //cells ,rects ,column remove index ,
     CGRect theRemoved = [_rectArray[index] CGRectValue];
-    _totalHeight -= theRemoved.size.height;
+    _totalHeight -= (theRemoved.size.height+_space.height);
     [_cells removeObjectAtIndex: index];
     [_rectArray removeObjectAtIndex: index];
     _count = _cells.count;
