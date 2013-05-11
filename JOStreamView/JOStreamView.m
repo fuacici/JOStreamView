@@ -225,19 +225,17 @@
     CGRect tframe =  [_rectArray[idx] CGRectValue];
     if (animate)
     {
-        if (!CGRectEqualToRect(tframe, cell.frame))
+        CGRect originRct = cell.frame;
+        if (!justMove)
         {
-            CGRect originRct = cell.frame;
-            if (!justMove)
-            {
-                 originRct.origin.y = tframe.origin.y+originRct.size.height;
-                originRct.origin.x = tframe.origin.x;
-            }
+            originRct.origin.y = tframe.origin.y+originRct.size.height;
+            originRct.origin.x = tframe.origin.x;
             cell.frame = originRct;
-            [UIView animateWithDuration:0.3 animations:^{
-                cell.frame =tframe;
-            }];
         }
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            cell.frame =tframe;
+        }];
     }else
     {
         cell.frame = tframe;
