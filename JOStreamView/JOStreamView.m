@@ -250,10 +250,6 @@
 - (void)enqueueCellAtIndex:(NSInteger) idx
 {
     JOStreamCellView * cell = _cells[idx];
-    if ([cell isEqual:[NSNull null]])
-    {
-        DebugLog(@"%@-%d",@"error",idx);
-    }
     NSAssert(![cell isEqual: [NSNull null]], @"enqueued cell can not be null");
     [cell removeFromSuperview];
     [_reusedCells addObject:cell];
@@ -314,7 +310,7 @@
     [_visibleCells removeIndex: index];
     
     // make sure the greater indexes are right
-    NSInteger st = [_visibleCells indexGreaterThanOrEqualToIndex: index];
+    NSInteger st = [_visibleCells indexGreaterThanIndex: index];
     if (st!= NSNotFound)
     {
         [_visibleCells shiftIndexesStartingAtIndex:st by:-1];
@@ -354,8 +350,11 @@
                 float x = _margin.width +col.index *( _columnWidth+ _space.width) ;
                 trct.origin = CGPointMake(x, col.height);
                 _rectArray[idx] = [NSValue valueWithCGRect: trct];
-                //adjust them
-                [_visibleCells removeIndex: idx];
+                if ( CGRectIntersectsRect(visibleRect, trct))
+                {
+                    [_visibleCells addIndex:idx];
+                    [self loadViewAtIndex:idx animate:animated];
+                }
             }
             col.height += trct.size.height+_space.height;
         }];
@@ -365,8 +364,8 @@
         col.height -= (theRemoved.size.height + _space.height);
     }
     
-    [self refreshViews:animated];
-    float maxh = 0;
+    
+    float maxh = _scrollView.bounds.size.height+1;
     for(JOStreamColumn * col in _columns)
     {
         maxh = maxh > col.height? maxh:col.height;
@@ -419,7 +418,7 @@
             }
             col.height += trct.size.height+_space.height;
         }];
-        float maxh = 0;
+        float maxh = _scrollView.bounds.size.height+1;
         for(JOStreamColumn * col in _columns)
         {
             maxh = maxh > col.height? maxh:col.height;
