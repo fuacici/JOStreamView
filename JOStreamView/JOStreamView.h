@@ -27,7 +27,7 @@
 - (CGSize) actualSizeForCellAtIndex:(NSInteger) index;
 - (NSInteger)indexForCell:(JOStreamCellView *) cell;
 - (void)removeCellAtIndex:(NSInteger) index animated:(BOOL) animated;
-- (void)appendCells:(int) amount;
+- (void)appendCells:(int) amount animated:(BOOL) animated;
 @end
 
 @protocol JOStreamViewDelegate <UIScrollViewDelegate>

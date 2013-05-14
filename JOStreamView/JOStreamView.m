@@ -376,7 +376,7 @@
         [self.delegate streamView:self didRemoveView:cell atIndex:index];
     }
 }
-- (void)appendCells:(int) amount
+- (void)appendCells:(int) amount animated:(BOOL) animated
 {
     if (amount<=0)
     {
@@ -387,7 +387,7 @@
     NSRange newCellsRange = NSMakeRange(old, amount);
     [self addPlaceHoldersForRange: newCellsRange];
     [self recaculateColumnsForCells:newCellsRange];
-    [self refreshViews:NO];
+    [self refreshViews:animated];
 }
 - (void)reloadCellAtIndex:(NSInteger) index animated:(BOOL) animated
 {
