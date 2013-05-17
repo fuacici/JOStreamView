@@ -38,6 +38,7 @@
 @end
 
 #pragma mark - implementation
+static const float sSwipeLenght = 8;
 @implementation JOStreamView
 
 - (id)initWithFrame:(CGRect)frame
@@ -48,6 +49,7 @@
         _margin = CGSizeMake(5, 5);
         _space = CGSizeMake(3, 3);
         _scrollView = self;
+        _scrollView.contentSize = CGSizeMake(_scrollView.bounds.size.width, _scrollView.bounds.size.height+1);
 //        [self addSubview: _scrollView];
     }
     return self;
@@ -91,7 +93,7 @@
 {
     if (animatingCell )
     {
-        DebugLog(@"%@",@"cell is being dragged");
+//        DebugLog(@"%@",@"cell is being dragged");
         return;
     }
     //load views
@@ -153,7 +155,7 @@
 - (void)recaculateColumnsForCells:(NSRange) cellsRange
 {
     float averageH = _totalHeight/_columnNum;
-    float maxHeight = 0;
+    float maxHeight = _scrollView.bounds.size.height+1;
  
     int autoAdjustCount =0;
     int tcol = 0;
@@ -167,7 +169,7 @@
         if (autoAdjustCount <_columnNum && theight>averageH)
         {
             //it maybe moved to  next column
-            DebugLog(@"### %@ col: %d index:%d",@"高度自适应", tcol,i);
+//            DebugLog(@"### %@ col: %d index:%d",@"高度自适应", tcol,i);
             autoAdjustCount ++;
             tcol++;
             if (tcol>= _columnNum)
@@ -454,11 +456,11 @@
     CGPoint newpos = [touch locationInView: _scrollView];
     if (!isSwipe)
     {
-        if (fabs(newpos.x - beginPos.x) >=15)
+        if (fabs(newpos.x - beginPos.x) >=sSwipeLenght)
         {
             isSwipe = YES;
             swipeDirection = (newpos.x - beginPos.x >0)?UISwipeGestureRecognizerDirectionRight:UISwipeGestureRecognizerDirectionLeft;
-        }else if(fabs(newpos.y - beginPos.y) >=15)
+        }else if(fabs(newpos.y - beginPos.y) >=sSwipeLenght)
         {
             isSwipe = YES;
             swipeDirection = (newpos.y - beginPos.y >0)?UISwipeGestureRecognizerDirectionDown:UISwipeGestureRecognizerDirectionUp;
@@ -529,7 +531,7 @@
     //opacity= - PI/4 * |deltaX| +1;
     float opacity = -4*M_1_PI * fabs(angle)+1;
     animatingCell.layer.opacity = opacity;
-    DebugLog(@"offset : %@", NSStringFromCGSize(offset));
+//    DebugLog(@"offset : %@", NSStringFromCGSize(offset));
 }
 #endif
 - (void)cleanAnimatedCell

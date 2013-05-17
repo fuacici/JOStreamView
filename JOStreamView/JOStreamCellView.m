@@ -23,7 +23,6 @@
         [self addSubview: _contentView];
         [_contentView addSubview: _imageView];
         [_contentView addSubview:_label];
-        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -31,14 +30,11 @@
 {
     _imageView.image = nil;
 }
-/*
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+
+
 //- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 //{
 //    if (_target && [_target respondsToSelector:@selector(selectedCell:)])
