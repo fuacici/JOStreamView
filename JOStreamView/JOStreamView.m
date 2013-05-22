@@ -59,10 +59,7 @@ static const float sSwipeLenght = 8;
         [self cleanAnimatedCell];
     //get  whole count 
     _count = [_datasource numberOfViewsStreamView:self];
-    if (_count ==0)
-    {
-        return;
-    }
+    
     //  get columnNum
     _columnNum = [_datasource  numberOfColumnsInStreamView:self];
     self.columns = [NSMutableArray arrayWithCapacity:_columnNum];
@@ -75,10 +72,10 @@ static const float sSwipeLenght = 8;
         [t makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [_reusedCells addObjectsFromArray: t];
     }
-    _totalHeight=0;
-    _columnWidth = (self.bounds.size.width- _margin.width*2 -_space.width * (_columnNum-1))/_columnNum;
     self.visibleCells = [NSMutableIndexSet indexSet];
     self.cells = [NSMutableArray arrayWithCapacity: _count];
+    _totalHeight=0;
+    _columnWidth = (self.bounds.size.width- _margin.width*2 -_space.width * (_columnNum-1))/_columnNum;
     [self createColumns];
     [self addPlaceHoldersForRange:NSMakeRange(0, _count)];
     [self recaculateColumnsForCells: NSMakeRange(0 , _count)];
