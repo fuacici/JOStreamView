@@ -28,7 +28,7 @@
 }
 - (void)prepareForReuse
 {
-    _imageView.image = nil;
+    
 }
 
 // Only override drawRect: if you perform custom drawing.

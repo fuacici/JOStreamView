@@ -76,10 +76,13 @@ static const float sSwipeLenght = 8;
     self.cells = [NSMutableArray arrayWithCapacity: _count];
     _totalHeight=0;
     _columnWidth = (self.bounds.size.width- _margin.width*2 -_space.width * (_columnNum-1))/_columnNum;
-    [self createColumns];
-    [self addPlaceHoldersForRange:NSMakeRange(0, _count)];
-    [self recaculateColumnsForCells: NSMakeRange(0 , _count)];
-    [self refreshViews:NO];
+    @autoreleasepool {
+        [self createColumns];
+        [self addPlaceHoldersForRange:NSMakeRange(0, _count)];
+        [self recaculateColumnsForCells: NSMakeRange(0 , _count)];
+        [self refreshViews:NO];
+    }
+    
 }
 - (void)layoutSubviews
 {
