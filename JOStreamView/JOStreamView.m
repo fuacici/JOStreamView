@@ -112,13 +112,28 @@ static const float sSwipeLenght = 8;
         }
     }];
     [_visibleCells removeIndexes: idxToRemove];
-    [newIdx enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSValue * value = _rectArray[idx];
-        if ( CGRectIntersectsRect(visibleRect, [value CGRectValue]) )
-        {
-            [self loadViewAtIndex: idx animate: animated];
-        }
-    }];
+    for (JOStreamColumn * col in _columns)
+    {
+        __block BOOL found = NO;
+        [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            CGRect  rct = [_rectArray[idx] CGRectValue];
+            if ( CGRectIntersectsRect(visibleRect,rct) )
+            {
+                [self loadViewAtIndex: idx animate: animated];
+                found =YES;
+            }else if(found)
+            {
+                *stop = YES;
+            }
+        }];
+    }
+//    [newIdx enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+//        NSValue * value = _rectArray[idx];
+//        if ( CGRectIntersectsRect(visibleRect, [value CGRectValue]) )
+//        {
+//            [self loadViewAtIndex: idx animate: animated];
+//        }
+//    }];
 }
 #define AutoAdjustHeight 1
 #define HorizontalLayout 1

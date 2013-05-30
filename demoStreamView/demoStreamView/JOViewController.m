@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
     _item = [NSMutableArray arrayWithCapacity:10];
-    for (int i =0; i!= 10; ++i) {
+    for (int i =0; i!= 300; ++i) {
         [_item addObject:[NSString  stringWithFormat:@"origin %d", i]];
     }
     _stream = [[JOStreamView alloc] initWithFrame:self.view.bounds];
