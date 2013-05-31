@@ -75,6 +75,7 @@ static const float sSwipeLenght = 8;
     self.visibleCells = [NSMutableIndexSet indexSet];
     self.cells = [NSMutableArray arrayWithCapacity: _count];
     _totalHeight=0;
+    visibleRect = CGRectZero;
     _columnWidth = (self.bounds.size.width- _margin.width*2 -_space.width * (_columnNum-1))/_columnNum;
     @autoreleasepool {
         [self createColumns];
@@ -96,44 +97,87 @@ static const float sSwipeLenght = 8;
 //        DebugLog(@"%@",@"cell is being dragged");
         return;
     }
+    CFAbsoluteTime t = CFAbsoluteTimeGetCurrent();
     //load views
+    CGRect oldVisible = visibleRect;
     visibleRect = CGRectMake(_scrollView.contentOffset.x, _scrollView.contentOffset.y, _scrollView.frame.size.width,  _scrollView.frame.size.height);
     NSMutableIndexSet * newIdx = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _rectArray.count)];
     [newIdx removeIndexes: _visibleCells];
-    
+    BOOL movedUp = (visibleRect.origin.y - oldVisible.origin.y)>=0;
     //clear the outbounded cells
-    NSMutableIndexSet * idxToRemove = [NSMutableIndexSet indexSet];
-    [_visibleCells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        CGRect tr = [_rectArray[idx]  CGRectValue];
-        if (!CGRectIntersectsRect(visibleRect, tr))
-        {
-            [idxToRemove addIndex: idx];
-            [self enqueueCellAtIndex: idx];
-        }
-    }];
-    [_visibleCells removeIndexes: idxToRemove];
     for (JOStreamColumn * col in _columns)
     {
+        NSEnumerationOptions options = movedUp? 0:NSEnumerationReverse;
+        NSMutableIndexSet * removed = [NSMutableIndexSet indexSet];
         __block BOOL found = NO;
-        [col.cells enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [col.visible enumerateIndexesWithOptions:options usingBlock:^(NSUInteger idx, BOOL *stop) {
+            CGRect tr = [_rectArray[idx]  CGRectValue];
+            if (!CGRectIntersectsRect(visibleRect, tr))
+            {
+                [removed addIndex:idx];
+                [self enqueueCellAtIndex:idx];
+                found=YES;
+            }else
+            {
+                if (found==YES)
+                {
+                    *stop = YES;
+                }
+            }
+        }];
+        [col.visible removeIndexes: removed];
+    }
+    
+    [_visibleCells removeAllIndexes];
+    //add new cell
+    for (JOStreamColumn * col in _columns)
+    {
+        NSRange searchRange;
+        NSEnumerationOptions options = 0;
+        if (movedUp)
+        {
+            NSInteger begin = [col.visible lastIndex];
+            if (begin == NSNotFound)
+            {
+                begin =0;
+            }
+            searchRange.location = begin;
+            searchRange.length = _count;
+        }else
+        {
+            NSInteger end = [col.visible firstIndex];
+            if (end == NSNotFound)
+            {
+                end =_count-1;
+            }else
+            {
+            }
+            searchRange.location=0;
+            searchRange.length = end+1;
+            options = NSEnumerationReverse;
+        }
+        
+        __block BOOL found = NO;
+        [col.cells enumerateIndexesInRange:searchRange options:NULL usingBlock:^(NSUInteger idx, BOOL *stop) {
             CGRect  rct = [_rectArray[idx] CGRectValue];
             if ( CGRectIntersectsRect(visibleRect,rct) )
             {
                 [self loadViewAtIndex: idx animate: animated];
+                [col.visible addIndex:idx];
                 found =YES;
             }else if(found)
             {
                 *stop = YES;
             }
         }];
+        [_visibleCells addIndexes:col.visible];
     }
-//    [newIdx enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-//        NSValue * value = _rectArray[idx];
-//        if ( CGRectIntersectsRect(visibleRect, [value CGRectValue]) )
-//        {
-//            [self loadViewAtIndex: idx animate: animated];
-//        }
-//    }];
+    CFAbsoluteTime e = CFAbsoluteTimeGetCurrent() -t;
+    if (e>0.016)
+    {
+        DebugLog(@"used %f",e);
+    }
+    
 }
 #define AutoAdjustHeight 1
 #define HorizontalLayout 1

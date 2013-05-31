@@ -15,6 +15,7 @@
     if (self)
     {
         _cells = [NSMutableIndexSet indexSet];
+        _visible = [NSMutableIndexSet indexSet];
     }
     return self;
 }

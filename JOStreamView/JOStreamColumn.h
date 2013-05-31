@@ -13,4 +13,5 @@
 @property (nonatomic) CGFloat  width;
 @property (nonatomic,strong,readonly) NSMutableIndexSet* cells;
 @property (nonatomic) int index;
+@property (nonatomic,strong,readonly) NSMutableIndexSet * visible;
 @end
