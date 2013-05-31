@@ -97,7 +97,6 @@ static const float sSwipeLenght = 8;
 //        DebugLog(@"%@",@"cell is being dragged");
         return;
     }
-    CFAbsoluteTime t = CFAbsoluteTimeGetCurrent();
     //load views
     CGRect oldVisible = visibleRect;
     visibleRect = CGRectMake(_scrollView.contentOffset.x, _scrollView.contentOffset.y, _scrollView.frame.size.width,  _scrollView.frame.size.height);
@@ -172,12 +171,6 @@ static const float sSwipeLenght = 8;
         }];
         [_visibleCells addIndexes:col.visible];
     }
-    CFAbsoluteTime e = CFAbsoluteTimeGetCurrent() -t;
-    if (e>0.016)
-    {
-        DebugLog(@"used %f",e);
-    }
-    
 }
 #define AutoAdjustHeight 1
 #define HorizontalLayout 1
@@ -302,9 +295,6 @@ static const float sSwipeLenght = 8;
         cell.frame = tframe;
     }
     
-    
-    
-    
      NSAssert(![cell isEqual: [NSNull null]], @"enqueued cell can not be null");
     return cell;
 }
@@ -385,15 +375,16 @@ static const float sSwipeLenght = 8;
         if ([col.cells containsIndex:index])
         {
             affectedCol = col.index;
-            [col.cells removeIndex: index];
+            [col.cells removeIndex:index];
+            [col.visible removeIndex:index];
         }
         
         //just shift greater index
         NSInteger t = [col.cells indexGreaterThanIndex: index];
-        if (t!= NSNotFound)
-        {
-            [col.cells shiftIndexesStartingAtIndex: t by:-1];
-        }
+        [col.cells shiftIndexesStartingAtIndex: t by:-1];
+        t = [col.visible indexGreaterThanIndex: index];
+        [col.visible shiftIndexesStartingAtIndex: t by:-1];
+       
        
     }
     
