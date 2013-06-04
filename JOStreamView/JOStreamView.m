@@ -97,6 +97,10 @@ static const float sSwipeLenght = 8;
 //        DebugLog(@"%@",@"cell is being dragged");
         return;
     }
+    if (_count ==0)
+    {
+        return;
+    }
     //load views
     CGRect oldVisible = visibleRect;
     visibleRect = CGRectMake(_scrollView.contentOffset.x, _scrollView.contentOffset.y, _scrollView.frame.size.width,  _scrollView.frame.size.height);
@@ -157,7 +161,7 @@ static const float sSwipeLenght = 8;
         }
         
         __block BOOL found = NO;
-        [col.cells enumerateIndexesInRange:searchRange options:NULL usingBlock:^(NSUInteger idx, BOOL *stop) {
+        [col.cells enumerateIndexesInRange:searchRange options:options usingBlock:^(NSUInteger idx, BOOL *stop) {
             CGRect  rct = [_rectArray[idx] CGRectValue];
             if ( CGRectIntersectsRect(visibleRect,rct) )
             {
