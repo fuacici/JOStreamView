@@ -1,7 +1,8 @@
 CLStreamView
 ============
 
-iOS Stream View, like pinterest
+iOS stream view , water falls, just like pinterest.
 
-It will auto balance the columns' heights.
-Have macros to switch layout of the cells between horizontal and vertical.
+Features:
+* Autolayout to balance the columns' heights.
+* Macros to switch  between horizontal and vertical cells layout.
